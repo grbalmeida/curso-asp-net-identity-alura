@@ -26,7 +26,14 @@ namespace ByteBank.Forum
             builder.CreatePerOwinContext<UserManager<UsuarioAplicacao>>((opcoes, contextoOwin) =>
             {
                 var userStore = contextoOwin.Get<IUserStore<UsuarioAplicacao>>();
-                return new UserManager<UsuarioAplicacao>(userStore);
+                var userManager = new UserManager<UsuarioAplicacao>(userStore);
+
+                var userValidator = new UserValidator<UsuarioAplicacao>(userManager);
+                userValidator.RequireUniqueEmail = true;
+
+                userManager.UserValidator = userValidator;
+
+                return userManager;
             });
         }
     }

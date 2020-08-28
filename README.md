@@ -21,3 +21,15 @@ Install-Package Microsoft.AspNet.Identity.EntityFramework -Version 2.2.1
     />
   </connectionStrings>
 ```
+
+### Comando para instalação do Owin
+
+```
+Install-Package Microsoft.Owin.Host.SystemWeb -Version 3.1.0
+```
+
+### Comando para instalação do pacote que faz a comunicação do Identity com o Owin
+
+```
+Install-Package Microsoft.AspNet.Identity.Owin -Version 2.2.1
+```

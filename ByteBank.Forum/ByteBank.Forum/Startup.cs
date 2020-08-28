@@ -1,4 +1,5 @@
-﻿using ByteBank.Forum.Models;
+﻿using ByteBank.Forum.App_Start.Identity;
+using ByteBank.Forum.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -32,6 +33,14 @@ namespace ByteBank.Forum
                 userValidator.RequireUniqueEmail = true;
 
                 userManager.UserValidator = userValidator;
+                userManager.PasswordValidator = new SenhaValidador()
+                {
+                    TamanhoRequerido = 6,
+                    ObrigatorioCaracteresEspeciais = true,
+                    ObrigatorioDigitos = true,
+                    ObrigatorioLowerCase = true,
+                    ObrigatorioUpperCase = true
+                };
 
                 return userManager;
             });

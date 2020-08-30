@@ -128,15 +128,28 @@ namespace ByteBank.Forum.Controllers
                     usuario.UserName,
                     modelo.Senha,
                     isPersistent: modelo.ContinuarLogado,
-                    shouldLockout: false
+                    shouldLockout: true
                 );
 
                 // O argumento isPersistent indica se o cookie deve permanecer no navegador após o usuário fechar o navegador
+                // O argumento shouldLockout indica se devemos bloquear o usuário de tentar se autenticar após determinado número de tentativas falhas
 
                 switch (signInResultado)
                 {
                     case SignInStatus.Success:
                         return RedirectToAction("Index", "Home");
+                    case SignInStatus.LockedOut:
+                        var senhaCorreta = await UserManager.CheckPasswordAsync(usuario, modelo.Senha);
+
+                        if (senhaCorreta)
+                        {
+                            ModelState.AddModelError("", "A conta está bloqueada!");
+                            break;
+                        }
+                        else
+                        {
+                            return SenhaOuUsuarioInvalidos();
+                        }
                     default:
                         return SenhaOuUsuarioInvalidos();
                 }

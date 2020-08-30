@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
+using System;
 using System.Data.Entity;
 
 [assembly: OwinStartup(typeof(ByteBank.Forum.Startup))]
@@ -49,6 +50,13 @@ namespace ByteBank.Forum
                 var dataProtectionProviderCreated = dataProtectionProvider.Create("ByteBank.Forum");
 
                 userManager.UserTokenProvider = new DataProtectorTokenProvider<UsuarioAplicacao>(dataProtectionProviderCreated);
+
+                userManager.MaxFailedAccessAttemptsBeforeLockout = 3;
+                // Máximo de tentativas falhas antes de bloquear usuário
+                userManager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                // Usuário ficara impedido por 5 minutos de efetuar o login
+                userManager.UserLockoutEnabledByDefault = true;
+                // Bloqueia todos os usuários
 
                 return userManager;
             });

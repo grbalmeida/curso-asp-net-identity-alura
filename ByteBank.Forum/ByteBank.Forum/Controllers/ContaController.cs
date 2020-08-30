@@ -3,6 +3,7 @@ using ByteBank.Forum.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -207,6 +208,48 @@ namespace ByteBank.Forum.Controllers
 
         public ActionResult ConfirmacaoAlteracaoSenha(string usuarioId, string token)
         {
+            var modelo = new ContaConfirmacaoAlteracaoSenhaViewModel
+            {
+                UsuarioId = usuarioId,
+                Token = token
+            };
+
+            return View(modelo);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ConfirmacaoAlteracaoSenha(ContaConfirmacaoAlteracaoSenhaViewModel modelo)
+        {
+            if (ModelState.IsValid)
+            {
+                // Verifica o token recebido
+                // Verifica o ID do usuário
+                // Mudar a senha
+
+                try
+                {
+                    var resultado =
+                        await UserManager.ResetPasswordAsync(
+                            modelo.UsuarioId,
+                            modelo.Token,
+                            modelo.NovaSenha
+                        );
+
+                    if (resultado.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    AdicionaErros(resultado);
+                }
+                catch (InvalidOperationException)
+                {
+                    // Lança InvalidOperationException se o id do usuário não for encontrado
+                    // Caso o token seja inválido apenas vem Invalid token na propriedade Erros do Identity Result
+                    return View("Error");
+                }
+            }
+
             return View();
         }
 

@@ -76,13 +76,25 @@ namespace ByteBank.Forum.Controllers
             var resultado = await UserManager.ConfirmEmailAsync(usuarioId, token);
 
             if (resultado.Succeeded)
-            {
                 return RedirectToAction("Index", "Home");
-            }
-            else
+            
+            return View("Error");
+        }
+
+        public async Task<ActionResult> Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Login(ContaLoginViewModel modelo)
+        {
+            if (ModelState.IsValid)
             {
-                return View("Error");
+                // Realizar login Identity
             }
+
+            return View(modelo);
         }
 
         private async Task EnviarEmailDeConfirmacaoAsync(UsuarioAplicacao usuario)

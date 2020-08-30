@@ -33,3 +33,9 @@ Install-Package Microsoft.Owin.Host.SystemWeb -Version 3.1.0
 ```
 Install-Package Microsoft.AspNet.Identity.Owin -Version 2.2.1
 ```
+
+### Comando para instalação do pacote de cookies do Identity
+
+```
+Install-Package Microsoft.Owin.Security.Cookies -Version 3.1.0
+```

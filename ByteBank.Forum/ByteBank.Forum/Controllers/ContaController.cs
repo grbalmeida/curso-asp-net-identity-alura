@@ -118,9 +118,11 @@ namespace ByteBank.Forum.Controllers
                 var signInResultado = await SignInManager.PasswordSignInAsync(
                     usuario.UserName,
                     modelo.Senha,
-                    isPersistent: false,
+                    isPersistent: modelo.ContinuarLogado,
                     shouldLockout: false
                 );
+
+                // O argumento isPersistent indica se o cookie deve permanecer no navegador após o usuário fechar o navegador
 
                 switch (signInResultado)
                 {
